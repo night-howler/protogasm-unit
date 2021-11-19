@@ -1,10 +1,15 @@
 #!/bin/bash
 set -ex
 
-#g++ -I ../ArduinoFake/src -c \
-    #../ArduinoFake/src/arduino/IPAddress.cpp \
-    #../ArduinoFake/src/arduino/noniso.c \
-    #../ArduinoFake/src/*.cpp
+if [ $# -eq 1 ]; then
+    g++ -I ../ArduinoFake/src -c \
+        ../ArduinoFake/src/arduino/IPAddress.cpp \
+        ../ArduinoFake/src/arduino/noniso.c \
+        ../ArduinoFake/src/*.cpp \
+        ../ArduinoFake/external/unity/unity-repo/src/unity.c
+fi
 
-g++ -I ../ArduinoFake/src -c main.cpp test.cpp
+g++ -I ../ArduinoFake/src \
+    -I ../ArduinoFake/external/unity/unity-repo/src \
+    -c main.cpp test.cpp
 g++ *.o

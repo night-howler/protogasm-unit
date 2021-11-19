@@ -1,8 +1,8 @@
-#include <arduino/Arduino.h>
-#include <FunctionFake.h>
+#include <Arduino.h>
 
 void loop()
 {
+    delay(100);
     delay(100);
 }
 
