@@ -1,0 +1,10 @@
+#!/bin/bash
+set -ex
+
+#g++ -I ../ArduinoFake/src -c \
+    #../ArduinoFake/src/arduino/IPAddress.cpp \
+    #../ArduinoFake/src/arduino/noniso.c \
+    #../ArduinoFake/src/*.cpp
+
+g++ -I ../ArduinoFake/src -c main.cpp test.cpp
+g++ *.o
