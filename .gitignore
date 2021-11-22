@@ -1,3 +1,2 @@
 *.swp
-*.o
-a.out
+build/
