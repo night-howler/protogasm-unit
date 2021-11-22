@@ -37,11 +37,13 @@
    to reset.
 */
 //=======Libraries===============================
-#include <Encoder.h>
-#include <EEPROM.h>
-#include "FastLED.h"
-#include "RunningAverage.h"
 #include <Arduino.h>
+//#include <Encoder.h>
+#include <EEPROM.h>
+//#include "FastLED.h"
+#include "RunningAverage.h"
+
+#define min(a,b) ((a)<(b)?(a):(b))
 
 //=======Hardware Setup===============================
 //LEDs
@@ -53,7 +55,7 @@
 
 //Encoder
 #define ENC_SW   5 //Pushbutton on the encoder
-Encoder myEnc(3, 2); //Quadrature inputs
+//Encoder myEnc(3, 2); //Quadrature inputs
 #define ENC_SW_UP   HIGH
 #define ENC_SW_DOWN LOW
 
@@ -104,7 +106,7 @@ uint8_t state = MANUAL;
 #define MOT_MAX 255 // Motor PWM maximum
 #define MOT_MIN 20  // Motor PWM minimum.  It needs a little more than this to start.
 
-CRGB leds[NUM_LEDS];
+//CRGB leds[NUM_LEDS];
 
 int pressure = 0;
 int avgPressure = 0; //Running 25 second average pressure
@@ -151,15 +153,15 @@ void setup() {
 
   // Classic AVR based Arduinos have a PWM frequency of about 490Hz which
   // causes the motor to whine.  Change the prescaler to achieve 31372Hz.
-  sbi(TCCR1B, CS10);
-  cbi(TCCR1B, CS11);
-  cbi(TCCR1B, CS12);
+  //sbi(TCCR1B, CS10);
+  //cbi(TCCR1B, CS11);
+  //cbi(TCCR1B, CS12);
 
   pinMode(MOTPIN, OUTPUT); //Enable "analog" out (PWM)
 
   pinMode(BUTTPIN, INPUT); //default is 10 bit resolution (1024), 0-3.3
 
-  raPressure.clear(); //Initialize a running pressure average
+  //raPressure.clear(); //Initialize a running pressure average
 
   digitalWrite(MOTPIN, LOW);//Make sure the motor is off
 
@@ -167,71 +169,74 @@ void setup() {
 
   Serial.begin(115200);
 
-  FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
+  //FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
   // limit power draw to .6A at 5v... Didn't seem to work in my FastLED version though
   //FastLED.setMaxPowerInVoltsAndMilliamps(5,DEFAULT_PLIMIT);
-  FastLED.setBrightness(BRIGHTNESS);
+  //FastLED.setBrightness(BRIGHTNESS);
 
   //Recall saved settings from memory
   sensitivity = EEPROM.read(SENSITIVITY_ADDR);
   maxSpeed = min(EEPROM.read(MAX_SPEED_ADDR), MOT_MAX); //Obey the MOT_MAX the first power  cycle after chaning it.
-  beep_motor(1047, 1396, 2093); //Power on beep
+  //beep_motor(1047, 1396, 2093); //Power on beep
 }
 
 //=======LED Drawing Functions=================
 
-//Draw a "cursor", one pixel representing either a pressure or encoder position value
-//C1,C2,C3 are colors for each of 3 revolutions over the 13 LEDs (39 values)
-void draw_cursor_3(int pos, CRGB C1, CRGB C2, CRGB C3) {
-  pos = constrain(pos, 0, NUM_LEDS * 3 - 1);
-  int colorNum = pos / NUM_LEDS; //revolution number
-  int cursorPos = pos % NUM_LEDS; //place on circle, from 0-12
-  switch (colorNum) {
-    case 0:
-      leds[cursorPos] = C1;
-      break;
-    case 1:
-      leds[cursorPos] = C2;
-      break;
-    case 2:
-      leds[cursorPos] = C3;
-      break;
-  }
-}
 
-//Draw a "cursor", one pixel representing either a pressure or encoder position value
-void draw_cursor(int pos, CRGB C1) {
-  pos = constrain(pos, 0, NUM_LEDS - 1);
-  leds[pos] = C1;
-}
+////Draw a "cursor", one pixel representing either a pressure or encoder position value
+////C1,C2,C3 are colors for each of 3 revolutions over the 13 LEDs (39 values)
+//void draw_cursor_3(int pos, CRGB C1, CRGB C2, CRGB C3) {
+//  pos = constrain(pos, 0, NUM_LEDS * 3 - 1);
+//  int colorNum = pos / NUM_LEDS; //revolution number
+//  int cursorPos = pos % NUM_LEDS; //place on circle, from 0-12
+//  switch (colorNum) {
+//    case 0:
+//      leds[cursorPos] = C1;
+//      break;
+//    case 1:
+//      leds[cursorPos] = C2;
+//      break;
+//    case 2:
+//      leds[cursorPos] = C3;
+//      break;
+//  }
+//}
+//
+////Draw a "cursor", one pixel representing either a pressure or encoder position value
+//void draw_cursor(int pos, CRGB C1) {
+//  pos = constrain(pos, 0, NUM_LEDS - 1);
+//  leds[pos] = C1;
+//}
+//
+////Draw 3 revolutions of bars around the LEDs. From 0-39, 3 colors
+//void draw_bars_3(int pos, CRGB C1, CRGB C2, CRGB C3) {
+//  pos = constrain(pos, 0, NUM_LEDS * 3 - 1);
+//  int colorNum = pos / NUM_LEDS; //revolution number
+//  int barPos = pos % NUM_LEDS; //place on circle, from 0-12
+//  switch (colorNum) {
+//    case 0:
+//      fill_gradient_RGB(leds, 0, C1, barPos, C1);
+//      //leds[barPos] = C1;
+//      break;
+//    case 1:
+//      fill_gradient_RGB(leds, 0, C1, NUM_LEDS, C1);
+//      fill_gradient_RGB(leds, 0, C1, barPos, C2);
+//      break;
+//    case 2:
+//      fill_gradient_RGB(leds, 0, C1, NUM_LEDS, C2);
+//      fill_gradient_RGB(leds, 0, C2, barPos, C3);
+//      break;
+//  }
+//}
 
-//Draw 3 revolutions of bars around the LEDs. From 0-39, 3 colors
-void draw_bars_3(int pos, CRGB C1, CRGB C2, CRGB C3) {
-  pos = constrain(pos, 0, NUM_LEDS * 3 - 1);
-  int colorNum = pos / NUM_LEDS; //revolution number
-  int barPos = pos % NUM_LEDS; //place on circle, from 0-12
-  switch (colorNum) {
-    case 0:
-      fill_gradient_RGB(leds, 0, C1, barPos, C1);
-      //leds[barPos] = C1;
-      break;
-    case 1:
-      fill_gradient_RGB(leds, 0, C1, NUM_LEDS, C1);
-      fill_gradient_RGB(leds, 0, C1, barPos, C2);
-      break;
-    case 2:
-      fill_gradient_RGB(leds, 0, C1, NUM_LEDS, C2);
-      fill_gradient_RGB(leds, 0, C2, barPos, C3);
-      break;
-  }
-}
+
 
 //Provide a limited encoder reading corresponting to tacticle clicks on the knob.
 //Each click passes through 4 encoder pulses. This reduces it to 1 pulse per click
 int encLimitRead(int minVal, int maxVal) {
-  if (myEnc.read() > maxVal * 4)myEnc.write(maxVal * 4);
-  else if (myEnc.read() < minVal * 4) myEnc.write(minVal * 4);
-  return constrain(myEnc.read() / 4, minVal, maxVal);
+  //if (myEnc.read() > maxVal * 4)myEnc.write(maxVal * 4);
+  //else if (myEnc.read() < minVal * 4) myEnc.write(minVal * 4);
+  //return constrain(myEnc.read() / 4, minVal, maxVal);
 }
 
 //=======Program Modes/States==================
@@ -245,24 +250,24 @@ void run_manual() {
 
   //gyrGraphDraw(avgPressure, 0, 4 * 3 * NUM_LEDS);
   int presDraw = map(constrain(pressure - avgPressure, 0, pLimit), 0, pLimit, 0, NUM_LEDS * 3);
-  draw_bars_3(presDraw, CRGB::Green, CRGB::Yellow, CRGB::Red);
-  draw_cursor(knob, CRGB::Red);
+  //draw_bars_3(presDraw, CRGB::Green, CRGB::Yellow, CRGB::Red);
+  //draw_cursor(knob, CRGB::Red);
 }
 
 void draw_display() {
   int speedDraw = map(motSpeed, 0, MOT_MAX, 1, NUM_LEDS);
-  draw_cursor(speedDraw, CRGB::Blue);
+  //draw_cursor(speedDraw, CRGB::Blue);
 
   int maxDraw = map(maxSpeed, 0, MOT_MAX, 1, NUM_LEDS);
-  draw_cursor(maxDraw, state == OPT_SPEED ? CRGB::Cyan : 0x002020);
+  //draw_cursor(maxDraw, state == OPT_SPEED ? CRGB::Cyan : 0x002020);
 
   int presDraw = map(constrain(pressure - avgPressure, 0, pLimit), 0, pLimit, 0, NUM_LEDS * 3);
-  draw_bars_3(presDraw, CRGB::Green, CRGB::Yellow, CRGB::Red);
+  //draw_bars_3(presDraw, CRGB::Green, CRGB::Yellow, CRGB::Red);
 
   if (state == AUTO) {
-    draw_cursor_3(sensitivity, CRGB(64, 64, 255), CRGB::Blue, CRGB::Purple);
+    //draw_cursor_3(sensitivity, CRGB(64, 64, 255), CRGB::Blue, CRGB::Purple);
   } else {
-    draw_cursor_3(sensitivity, CRGB(20, 20, 40), 0x000044, 0x200020);
+    //draw_cursor_3(sensitivity, CRGB(20, 20, 40), 0x000044, 0x200020);
   }
 }
 
@@ -323,7 +328,7 @@ void run_opt_beep() {
 //Simply display the pressure analog voltage. Useful for debugging sensitivity issues.
 void run_opt_pres() {
   int p = map(analogRead(BUTTPIN), 0, ADC_MAX, 0, NUM_LEDS - 1);
-  draw_cursor(p, CRGB::White);
+  //draw_cursor(p, CRGB::White);
 }
 
 //Poll the knob click button, and check for long/very long presses as well
@@ -396,11 +401,11 @@ uint8_t set_state(uint8_t btnState, uint8_t state) {
       case MANUAL:
         return OPT_PRES;
       case AUTO:
-        myEnc.write(map(maxSpeed, 0, 255, 0, 4 * (NUM_LEDS))); //start at saved value
+        //myEnc.write(map(maxSpeed, 0, 255, 0, 4 * (NUM_LEDS))); //start at saved value
         EEPROM.update(SENSITIVITY_ADDR, sensitivity);
         return OPT_SPEED;
       case OPT_SPEED:
-        myEnc.write(4 * sensitivity);
+        //myEnc.write(4 * sensitivity);
         EEPROM.update(MAX_SPEED_ADDR, maxSpeed);
         //return OPT_RAMPSPD;
         //return OPT_BEEP;
@@ -410,17 +415,17 @@ uint8_t set_state(uint8_t btnState, uint8_t state) {
         //myEnc.write(0);
         return OPT_BEEP;
       case OPT_BEEP:
-        myEnc.write(0);
+        //myEnc.write(0);
         return OPT_PRES;
       case OPT_PRES:
-        myEnc.write(map(motSpeed, 0, 255, 0, 4 * (NUM_LEDS))); //start at saved value
+        //myEnc.write(map(motSpeed, 0, 255, 0, 4 * (NUM_LEDS))); //start at saved value
         return MANUAL;
     }
   }
   else if (btnState == BTN_LONG) {
     switch (state) {
       case MANUAL:
-        myEnc.write(sensitivity);//Whenever going into auto mode, keep the last sensitivity
+        //myEnc.write(sensitivity);//Whenever going into auto mode, keep the last sensitivity
         motSpeed = 0; //Also reset the motor speed to 0
         return AUTO;
       case AUTO:
@@ -428,7 +433,7 @@ uint8_t set_state(uint8_t btnState, uint8_t state) {
       case OPT_RAMPSPD:
       case OPT_BEEP:
       case OPT_PRES:
-        myEnc.write(0);
+        //myEnc.write(0);
         return MANUAL;
     }
   }
@@ -457,11 +462,11 @@ void loop() {
       }
     }
     pressure /= (OVERSAMPLE / 4);
-    fadeToBlackBy(leds, NUM_LEDS, 20); //Create a fading light effect. LED buffer is not otherwise cleared
+    //fadeToBlackBy(leds, NUM_LEDS, 20); //Create a fading light effect. LED buffer is not otherwise cleared
     uint8_t btnState = check_button();
     state = set_state(btnState, state); //Set the next state based on this state and button presses
     run_state_machine(state);
-    FastLED.show(); //Update the physical LEDs to match the buffer in software
+    //FastLED.show(); //Update the physical LEDs to match the buffer in software
 
     //Alert that the Pressure voltage amplifier is railing, and the trim pot needs to be adjusted
     if (pressure > PRESSURE_MAX * 0.98)beep_motor(2093, 2093, 2093); //Three high beeps
