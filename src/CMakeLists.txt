@@ -1,17 +1,13 @@
 cmake_minimum_required(VERSION 3.13)
-#project(Hello)
 set(CMAKE_CXX_STANDARD 11)
-file(GLOB AFSRC ~/src/ArduinoFake/src/*.cpp)
 add_subdirectory(ArduinoFake)
 add_executable(protogasm
     main.cpp
     test.cpp
     ~/Arduino/libraries/RunningAverage/RunningAverage.cpp
     ArduinoFake/external/unity/unity-repo/src/unity.c
-    ${AFSRC}
     cmock/src/cmock.c
     mocks/Mockmain.c
-
     )
 
 target_include_directories(protogasm PRIVATE
