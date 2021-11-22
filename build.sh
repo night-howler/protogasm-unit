@@ -3,7 +3,7 @@ set -ex
 
 if [ $# -eq 1 ]; then
     g++ -c -g \
-        -I ../ArduinoFake/src \
+        -I ~/src/ArduinoFake/src \
         -I ~/src/cmock/src \
         -I /home/user/src/cmock/vendor/unity/src \
         -I . \
@@ -26,8 +26,8 @@ g++ \
     -D__AVR__ \
     -c -g -Os -w -std=gnu++11 \
     -Wno-error=narrowing -MMD -flto \
-    -I ../ArduinoFake/external/unity/unity-repo/src \
-    -I ../ArduinoFake/src \
+    -I ~/src/ArduinoFake/external/unity/unity-repo/src \
+    -I ~/src/ArduinoFake/src \
     -I ~/Arduino/libraries/Encoder \
     -I ~/Arduino/libraries/FastLED/src \
     -I ~/Arduino/libraries/RunningAverage \
@@ -35,4 +35,5 @@ g++ \
     -I ~/arduino-1.8.13/hardware/arduino/avr/variants/standard/ \
     -I . \
     -c main.cpp test.cpp
+
 g++ -g *.o

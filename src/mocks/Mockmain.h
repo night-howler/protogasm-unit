@@ -3,7 +3,7 @@
 #define _MOCKMAIN_H
 
 #include "unity.h"
-#include "main.cpp"
+#include "main.h"
 
 /* Ignore the following warnings, since we are copying code */
 #if defined(__GNUC__) && !defined(__ICC) && !defined(__TMS470__)
@@ -24,8 +24,8 @@ void Mockmain_Verify(void);
 
 
 
-#define raPressure_ExpectAndReturn(RA_HIST_SECONDS, cmock_retval) raPressure_CMockExpectAndReturn(__LINE__, RA_HIST_SECONDS, cmock_retval)
-void raPressure_CMockExpectAndReturn(UNITY_LINE_TYPE cmock_line, RA_FREQUENCY* RA_HIST_SECONDS, RunningAverage cmock_to_return);
+#define beep_motor_Expect(f1, f2, f3) beep_motor_CMockExpect(__LINE__, f1, f2, f3)
+void beep_motor_CMockExpect(UNITY_LINE_TYPE cmock_line, int f1, int f2, int f3);
 
 #if defined(__GNUC__) && !defined(__ICC) && !defined(__TMS470__)
 #if __GNUC__ > 4 || (__GNUC__ == 4 && (__GNUC_MINOR__ > 6 || (__GNUC_MINOR__ == 6 && __GNUC_PATCHLEVEL__ > 0)))
