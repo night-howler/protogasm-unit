@@ -1,0 +1,3 @@
+[submodule "src/ArduinoFake"]
+	path = src/ArduinoFake
+	url = /home/user/src/ArduinoFake/
