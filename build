@@ -4,11 +4,16 @@ set -ex
 if [ $# -eq 1 ]; then
     g++ -c -g \
         -I ../ArduinoFake/src \
-        ../ArduinoFake/src/arduino/IPAddress.cpp \
-        ../ArduinoFake/src/arduino/noniso.c \
-        ../ArduinoFake/src/*.cpp \
+        -I ~/src/cmock/src \
+        -I /home/user/src/cmock/vendor/unity/src \
+        -I . \
+        mocks/*.c \
         ~/Arduino/libraries/RunningAverage/RunningAverage.cpp \
-        ../ArduinoFake/external/unity/unity-repo/src/unity.c
+        ~/src/ArduinoFake/external/unity/unity-repo/src/unity.c \
+        ~/src/ArduinoFake/src/*.cpp \
+        ~/src/ArduinoFake/src/arduino/IPAddress.cpp \
+        ~/src/ArduinoFake/src/arduino/noniso.c \
+        ~/src/cmock/src/cmock.c
 fi
 
 g++ \

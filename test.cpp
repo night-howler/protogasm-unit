@@ -1,5 +1,6 @@
 #include <ArduinoFake.h>
 #include <unity.h>
+#include <mocks/Mockmain.h>
 
 
 using namespace fakeit;
@@ -23,7 +24,7 @@ void test_setup(void)
     When(OverloadedMethod(ArduinoFake(Serial), begin, void(unsigned long))).AlwaysReturn();
     //When(Method(ArduinoFake(raPressure), clear)).AlwaysReturn();
     When(Method(ArduinoFake(), delay)).AlwaysReturn();
-    //When(Method(ArduinoFake(), beep_motor)).AlwaysReturn();
+    beep_motor_Expect(1047, 1396, 2093);
     setup();
     Verify(Method(ArduinoFake(), pinMode).Using(5, INPUT));
     Verify(Method(ArduinoFake(), digitalWrite).Using(5, HIGH));

@@ -21,4 +21,5 @@ test.o: test.cpp ../ArduinoFake/src/ArduinoFake.h \
  ../ArduinoFake/src/arduino/Client.h \
  ../ArduinoFake/src/arduino/IPAddress.h \
  ../ArduinoFake/external/unity/unity-repo/src/unity.h \
- ../ArduinoFake/external/unity/unity-repo/src/unity_internals.h
+ ../ArduinoFake/external/unity/unity-repo/src/unity_internals.h \
+ mocks/Mockmain.h main.h

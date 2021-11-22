@@ -177,7 +177,7 @@ void setup() {
   //Recall saved settings from memory
   sensitivity = EEPROM.read(SENSITIVITY_ADDR);
   maxSpeed = min(EEPROM.read(MAX_SPEED_ADDR), MOT_MAX); //Obey the MOT_MAX the first power  cycle after chaning it.
-  //beep_motor(1047, 1396, 2093); //Power on beep
+  beep_motor(1047, 1396, 2093); //Power on beep
 }
 
 //=======LED Drawing Functions=================
