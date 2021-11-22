@@ -175,9 +175,9 @@ void setup() {
   //FastLED.setBrightness(BRIGHTNESS);
 
   //Recall saved settings from memory
-  sensitivity = EEPROM.read(SENSITIVITY_ADDR);
-  maxSpeed = min(EEPROM.read(MAX_SPEED_ADDR), MOT_MAX); //Obey the MOT_MAX the first power  cycle after chaning it.
-  beep_motor(1047, 1396, 2093); //Power on beep
+  //sensitivity = EEPROM.read(SENSITIVITY_ADDR);
+  //maxSpeed = min(EEPROM.read(MAX_SPEED_ADDR), MOT_MAX); //Obey the MOT_MAX the first power  cycle after chaning it.
+  //beep_motor(1047, 1396, 2093); //Power on beep
 }
 
 //=======LED Drawing Functions=================
@@ -402,11 +402,11 @@ uint8_t set_state(uint8_t btnState, uint8_t state) {
         return OPT_PRES;
       case AUTO:
         //myEnc.write(map(maxSpeed, 0, 255, 0, 4 * (NUM_LEDS))); //start at saved value
-        EEPROM.update(SENSITIVITY_ADDR, sensitivity);
+        //EEPROM.update(SENSITIVITY_ADDR, sensitivity);
         return OPT_SPEED;
       case OPT_SPEED:
         //myEnc.write(4 * sensitivity);
-        EEPROM.update(MAX_SPEED_ADDR, maxSpeed);
+        //EEPROM.update(MAX_SPEED_ADDR, maxSpeed);
         //return OPT_RAMPSPD;
         //return OPT_BEEP;
         return AUTO; //Skip beep and rampspeed settings for now

@@ -6,14 +6,11 @@ add_subdirectory(ArduinoFake)
 add_executable(protogasm
     main.cpp
     test.cpp
-    mocks/Mockmain.c
     ~/Arduino/libraries/RunningAverage/RunningAverage.cpp
     ArduinoFake/external/unity/unity-repo/src/unity.c
     ${AFSRC}
-    ArduinoFake/src/arduino/IPAddress.cpp
-    ArduinoFake/src/arduino/noniso.c
-    ~/src/cmock/src/cmock.c
-    ~/src/ArduinoFake/src/ArduinoFake.cpp
+    cmock/src/cmock.c
+    mocks/Mockmain.c
 
     )
 
@@ -27,7 +24,7 @@ target_include_directories(protogasm PRIVATE
     ~/arduino-1.8.13/hardware/arduino/avr/variants/standard
     #/home/user/arduino-1.8.13/hardware/tools/avr/avr/include
     .
-    /home/user/src/cmock/src
+    cmock/src
     )
 target_compile_definitions(protogasm PRIVATE
     ARDUINO=10813

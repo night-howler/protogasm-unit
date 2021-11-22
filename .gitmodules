@@ -1,3 +1,6 @@
 [submodule "src/ArduinoFake"]
 	path = src/ArduinoFake
 	url = /home/user/src/ArduinoFake/
+[submodule "src/cmock"]
+	path = src/cmock
+	url = /home/user/src/cmock/
