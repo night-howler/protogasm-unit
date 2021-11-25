@@ -16,9 +16,9 @@ target_include_directories(protogasm PRIVATE
     Encoder
     FastLED/src
     RunningAverage
-    ~/arduino-1.8.13/hardware/arduino/avr/libraries/EEPROM/src
-    ~/arduino-1.8.13/hardware/arduino/avr/variants/standard
-    #/home/user/arduino-1.8.13/hardware/tools/avr/avr/include
+    arduino-1.8.13/hardware/arduino/avr/libraries/EEPROM/src
+    arduino-1.8.13/hardware/arduino/avr/variants/standard
+    #arduino-1.8.13/hardware/tools/avr/avr/include
     .
     cmock/src
     )
