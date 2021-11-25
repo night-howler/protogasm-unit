@@ -4,7 +4,7 @@ add_subdirectory(ArduinoFake)
 add_executable(protogasm
     main.cpp
     test.cpp
-    ~/Arduino/libraries/RunningAverage/RunningAverage.cpp
+    RunningAverage/RunningAverage.cpp
     ArduinoFake/external/unity/unity-repo/src/unity.c
     cmock/src/cmock.c
     mocks/Mockmain.c
@@ -15,7 +15,7 @@ target_include_directories(protogasm PRIVATE
     ArduinoFake/src
     ~/Arduino/libraries/Encoder
     ~/Arduino/libraries/FastLED/src
-    ~/Arduino/libraries/RunningAverage
+    RunningAverage
     ~/arduino-1.8.13/hardware/arduino/avr/libraries/EEPROM/src
     ~/arduino-1.8.13/hardware/arduino/avr/variants/standard
     #/home/user/arduino-1.8.13/hardware/tools/avr/avr/include
