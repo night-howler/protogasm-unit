@@ -13,8 +13,8 @@ add_executable(protogasm
 target_include_directories(protogasm PRIVATE
     ArduinoFake/external/unity/unity-repo/src
     ArduinoFake/src
-    ~/Arduino/libraries/Encoder
-    ~/Arduino/libraries/FastLED/src
+    Encoder
+    FastLED/src
     RunningAverage
     ~/arduino-1.8.13/hardware/arduino/avr/libraries/EEPROM/src
     ~/arduino-1.8.13/hardware/arduino/avr/variants/standard
