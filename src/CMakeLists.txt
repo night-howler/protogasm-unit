@@ -10,6 +10,8 @@ add_executable(protogasm
     cmock/src/cmock.c
     mocks/Mockmain.c
     )
+enable_testing()
+add_test(test protogasm)
 
 target_include_directories(protogasm PRIVATE
     ArduinoFake/external/unity/unity-repo/src
